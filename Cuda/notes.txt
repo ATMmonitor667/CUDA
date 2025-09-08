@@ -1,0 +1,41 @@
+-> Think of a Grid as a box, and that Grid contains multiple blocks inside of it, and those blocks contain multiple threads inside of them
+-> Think of a large rectangle containing(green) containing smaller squares(blue) and those smaller squares containing even smaller dots(red)
+-> Each thread has its own unique ID, and that ID can be used to determine what data that thread will work on
+-> Each block also has its own unique ID, and that ID can be used to determine what
+-------------------------------------------------------------------------------------------------
+CUDA Memory Hierarchy
+-------------------------------------------------------------------------------------------------
+-> Global Memory: Accessible by all threads, but slow to access
+-> Shared Memory: Accessible by all threads within a block, faster than global memory
+-> Local Memory: Accessible by a single thread, fastest to access
+-------------------------------------------------------------------------------------------------
+Cuda contains several SMs and each GPU. multiple CUDA cores per SM, shared cache register and shared memory
+-------------------------------------------------------------------------------------------------
+Threads have independent states and which can
+
+Warps are group of 32 threads that execute the same instruction at the same time be scheduled independently
+-------------------------------------------------------------------------------------------------
+Kernals
+Blocks are asigned to a single SM
+Blocks are split into Warps
+Multiple Warps can be assigned to a single SM be scheduled independently
+-------------------------------------------------------------------------------------------------
+
+the global keyword allows you to write a function on the host that can be called from the device
+kernalName<<<numBlocks, numThreadsPerBlock>>>(args) => imagine that each kernal is one grid, and within that grid there are two
+params which are numBlocks and numThreadsPerBlock and then the rfunction has its own args
+also the functions run in sets of 32 threads called warps
+Thread Indexing:
+threadIdx.x => gives the thread index within a block
+blockIdx.x => gives the block index within a grid
+blockDim.x => gives the number of threads per block, or the size of the block
+gridDim.x => gives the number of blocks in a grid, or the size of the grid be scheduled independently
+-------------------------------------------------------------------------------------------------
+example of this is
+int indx = threadIdx.x + blockIdx.x * blockDim.x;
+
+cudaMalloc((void**)&d_a, size); => allocates memory on the GPU
+cudaMemcpy(d_a, h_a, size, cudaMemcpyHostToDevice); => copies memory from the host to the device
+
+basically here Cuda is allocating memory on the GPU does the computation and then copies the result back to the CPU.
+-------------------------------------------------------------------------------------------------
