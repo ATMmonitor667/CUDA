@@ -9,6 +9,8 @@ __global__ void matrix_multiplication_kernel(const float* A, const float* B, flo
     for(int i =0; i < N; i ++)
     {
       sum += A[row * N + i] * B[col + K * i];
+      // Here A is a MXN and B is a NXK -> where you take the row multiple by the nmber of colums there are and increment
+      // on the flip side B you take the col and add it to the colomn * i and that way you are flying through the rows and col 0 at each 
     }
     C[row * K + col] = sum;
   }
