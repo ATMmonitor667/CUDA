@@ -41,7 +41,7 @@
 #include <thrust/extrema.h>
 #include <thrust/binary_search.h>
 #include <thrust/adjacent_difference.h>
-
+using namespace std;
 // Standard C++ Headers
 #include <iostream>
 #include <cmath>
@@ -110,7 +110,16 @@ int main(void) {
  * - Create an is_even predicate functor
  * - Use modulo operator (%)
  */
-
+void excercise2()
+{
+  thrust::device_vector<int> v;
+  int n = 100;
+  for(int i = 0; i < v.size(); i++) v[i] = i+1;
+  int count = thrust::count_if(v.begin(), v.end(), []__device__ (int x){
+    return x%2 == 0;
+  })
+  printf("This is an even number %d", count);
+}
 
 // ============================================================================
 // EXERCISE 3: Reduction with Custom Operation (Difficulty: 35/100)
@@ -130,6 +139,14 @@ int main(void) {
  * - Use thrust::multiplies<int>() as the binary operation
  * - Set initial value to 1 (not 0!)
  */
+
+ void excercise3(){
+  int n = 5;
+  thrust::device_vector<int> v(n);
+  for(int i = 0; i < n; i++)v[i] = i+1;
+  auto value = thrust::reduce(v.begin(), v.end(), 0, thrust::multiplies<int>())
+  printf("The product of all the values is %d", value);
+ }
 
 
 // ============================================================================
@@ -152,7 +169,22 @@ int main(void) {
  * - Pre-allocate output vector or use back_inserter
  */
 
-
+void excercise4()
+{
+  int n = 100;
+  thrust::device_vector<int> v(n);
+  thrust::sequence(v.begin(), v.end(),1);
+  auto value = thrust::count_if(v.begin(), v.end(),
+  []__device__(int x )
+  {
+    if(x%3 == 0 || x > 50)
+    {
+      return x;
+    }
+  }
+)
+ printf("This is the count of the numbers which are divisible by 3 and greater than 50 %d", value);
+}
 // ============================================================================
 // EXERCISE 5: Transform with Multiple Inputs (Difficulty: 50/100)
 // ============================================================================
