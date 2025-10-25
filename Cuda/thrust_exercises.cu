@@ -206,7 +206,27 @@ void excercise4()
  * - Create a binary functor that takes two arguments
  * - Use floating-point arithmetic carefully
  */
+void function5() {
+    // Define vectors
+    thrust::device_vector<float> a = {10, 20, 30, 40, 50};
+    thrust::device_vector<float> b = {5, 15, 25, 35, 45};
+    thrust::device_vector<float> result(a.size());
 
+    thrust::transform(
+        a.begin(), a.end(),        // first input range
+        b.begin(),                 // second input range
+        result.begin(),            // output range
+        [] __device__ (float x, float y) {
+            return x * 0.6f + y * 0.4f;
+        }
+    );
+
+    thrust::host_vector<float> h_result = result;
+    std::cout << "Weighted sum results: ";
+    for (float v : h_result)
+        std::cout << v << " ";
+    std::cout << std::endl;
+}
 
 // ============================================================================
 // EXERCISE 6: Scan (Prefix Sum) with Custom Operation (Difficulty: 55/100)
@@ -226,7 +246,24 @@ void excercise4()
  * - Use thrust::maximum<int>() as the binary operation
  * - Understand how scan differs from reduce
  */
+void excercise6()
+{
+  thrust::device_vector<int> v;
+  v[0] = 3;
+  v[1] = 1;
+  v[2]= 5;
+  v[3] =1;
+  v[4] =6;
+  v[5] = 9;
+  v[6] = 10;
+  thrust::inclusive_scan(v.begin(), v.end(), v.begin(),thrust::maximum<int>())
+  thrust::host_vector<int> h = v;
 
+    std::cout << "Running maximum: ";
+    for (int x : h) std::cout << x << " ";
+    std::cout << std::endl;
+
+}
 
 // ============================================================================
 // EXERCISE 7: Partition and Transform Pipeline (Difficulty: 65/100)
